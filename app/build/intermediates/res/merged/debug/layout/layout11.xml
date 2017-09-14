@@ -1,0 +1,211 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_5_80"
+        android:background="@drawable/toptitle"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/user"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:background="@drawable/user" />
+
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/w"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/blue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="6"
+            android:background="#00000000"
+            android:src="@drawable/bluetooth" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/height_1_80"
+        android:text="The measured results"
+        android:textColor="#000000"
+        android:textSize="@dimen/height_4_80" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_weight="2"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/bag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ui022"
+            android:gravity="end"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:paddingTop="15dp"
+                android:gravity="end"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/sys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.00"
+                    android:background="@drawable/ui021_01"
+                    android:gravity="center"
+                    android:paddingLeft="105dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/height_3_80" />
+
+                <TextView
+                    android:id="@+id/dia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.00"
+                    android:background="@drawable/ui021_02"
+                    android:gravity="center"
+                    android:paddingLeft="105dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/height_3_80" />
+
+                <TextView
+                    android:id="@+id/pul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.00"
+                    android:background="@drawable/ui021_03"
+                    android:gravity="center"
+                    android:paddingLeft="105dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/height_3_80" />
+            </LinearLayout>
+
+            <!-- - -->
+
+<!--             <TextView -->
+<!--                 android:id="@+id/sys" -->
+<!--                 android:layout_width="@dimen/width_10_80" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginLeft="@dimen/width_55_80" -->
+<!--                 android:layout_marginTop="@dimen/height_6_80" -->
+<!--                 android:layout_weight="0.00" -->
+<!--                 android:text="adsfadsf" -->
+<!--                 android:textColor="#000000" -->
+<!--                 android:textSize="@dimen/height_3_80" /> -->
+
+<!--             <TextView -->
+<!--                 android:id="@+id/dia" -->
+<!--                 android:layout_width="@dimen/width_10_80" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginLeft="@dimen/width_55_80" -->
+<!--                 android:layout_marginTop="@dimen/height_7_80" -->
+<!--                 android:layout_weight="0.00" -->
+<!--                 android:text="asdf" -->
+<!--                 android:textColor="#000000" -->
+<!--                 android:textSize="@dimen/height_3_80" /> -->
+
+<!--             <TextView -->
+<!--                 android:id="@+id/pul" -->
+<!--                 android:layout_width="@dimen/width_9_80" -->
+<!--                 android:layout_height="wrap_content" -->
+<!--                 android:layout_marginLeft="@dimen/width_55_80" -->
+<!--                 android:layout_marginTop="@dimen/height_9_80" -->
+<!--                 android:layout_weight="0.00" -->
+<!--                 android:text="asdfo" -->
+<!--                 android:textColor="#000000" -->
+<!--                 android:textSize="@dimen/height_3_80" /> -->
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:layout_weight="4"
+        android:scaleType="center"
+        android:src="@drawable/ui2color" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="4"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="@dimen/width_20_80"
+            android:layout_height="@dimen/height_7_80"
+            android:layout_marginLeft="@dimen/width_15_80"
+            android:background="@drawable/save2" />
+
+        <ImageButton
+            android:id="@+id/ignore"
+            android:layout_width="@dimen/width_20_80"
+            android:layout_height="@dimen/height_7_80"
+            android:layout_marginLeft="@dimen/width_9_80"
+            android:background="@drawable/ignor0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="4"
+        android:background="@drawable/down1"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home0" />
+
+        <ImageButton
+            android:id="@+id/treads"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/trends1" />
+
+        <ImageButton
+            android:id="@+id/history1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/history1" />
+    </LinearLayout>
+
+</LinearLayout>

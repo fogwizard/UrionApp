@@ -1,0 +1,182 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_5_80"
+            android:background="@drawable/toptitle"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/height_1_80"
+            android:background="@drawable/image" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="@dimen/width_50_80"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/width_1_80"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="13sp"
+            android:singleLine="true" >
+            
+        </EditText>
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checkedButton="@+id/man"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/man"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Male   "
+                android:textColor="#000000" />
+
+            <RadioButton
+                android:id="@+id/femal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000" />
+        </RadioGroup>
+        
+        
+        
+        
+
+        <LinearLayout
+            android:id="@+id/tu"
+            android:layout_width="@dimen/width_70_80"
+            android:layout_height="@dimen/height_20_80"
+            android:layout_gravity="center"
+            android:background="@drawable/info"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="@dimen/width_45_80"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:numeric="integer"
+                android:singleLine="true"
+                android:textSize="13sp" >
+            </EditText>
+
+            <EditText
+                android:id="@+id/height"
+                android:layout_width="@dimen/width_45_80"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:numeric="integer"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:hint="cm"
+                android:singleLine="true"
+                android:textSize="13sp" >
+            </EditText>
+
+            <EditText
+                android:id="@+id/weight"
+                android:layout_width="@dimen/width_45_80"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:numeric="integer"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:singleLine="true"
+                android:hint="kg"
+                android:textSize="13sp" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/width_80_80"
+            android:layout_height="@dimen/height_9_80"
+            android:layout_marginTop="@dimen/height_3_80"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/save"
+                android:layout_width="@dimen/width_25_80"
+                android:layout_height="@dimen/height_7_80"
+                android:layout_marginLeft="@dimen/width_5_80"
+                android:background="@drawable/save2"
+                android:paddingTop="@dimen/height_4_80" />
+
+            <ImageButton
+                android:id="@+id/delete"
+                android:layout_width="@dimen/width_25_80"
+                android:layout_height="@dimen/height_7_80"
+                android:layout_marginLeft="@dimen/width_20_80"
+                android:background="@drawable/del2"
+                android:paddingTop="@dimen/height_4_80" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/down1"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/home1" />
+
+        <ImageButton
+            android:id="@+id/treads"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/trends1" />
+
+        <ImageButton
+            android:id="@+id/history1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/history1" />
+    </LinearLayout>
+
+</RelativeLayout>

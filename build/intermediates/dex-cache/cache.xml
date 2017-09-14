@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\xiaochi\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0_fe63aef611e9fc1730198d2330d2781b47ad5bce.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\libs\achartengine-1.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="b2bb0af9f390c0edd4d7d95f613f38da3abe0144">
+        <dex dex="C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\build\intermediates\pre-dexed\debug\achartengine-1.0.0_2088ddc94e2552cffd3b392cf1f2c8002372fd09.jar" />
+    </item>
+
+</items>

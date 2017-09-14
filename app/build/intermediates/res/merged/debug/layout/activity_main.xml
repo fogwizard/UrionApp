@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/height_5_80"
+        android:background="@drawable/toptitle"
+        android:orientation="horizontal" >
+
+        <com.example.urionclass.MySpinnerButton
+            android:id="@+id/spinner_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/width_1_80"
+            android:layout_weight="5"
+            android:background="@drawable/button"
+            android:text="User" />
+
+        <ImageButton
+            android:id="@+id/bianji"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/width_1_80"
+            android:layout_weight="5"
+            android:background="@drawable/bianji2" />
+
+        <TextView
+            android:id="@+id/war"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_weight="3"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/blue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2">
+
+        <ImageView
+            android:id="@+id/one_imageview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/image1" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:src="@drawable/kd" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/progressBar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:background="@drawable/bg"
+            android:gravity="right"
+            android:max="300" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/width_1_80"
+        android:text="  Please sit down and keep quiet"
+        android:textColor="#000000"
+        android:textSize="@dimen/height_3_80" />
+
+    <ImageButton
+        android:id="@+id/start"
+        android:layout_width="@dimen/width_25_80"
+        android:layout_height="@dimen/height_7_80"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/width_1_80"
+        android:background="@drawable/start" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:background="@drawable/down1"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home0" />
+
+        <ImageButton
+            android:id="@+id/treads"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/trends1" />
+
+        <ImageButton
+            android:id="@+id/history1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/history1" />
+    </LinearLayout>
+
+</LinearLayout>

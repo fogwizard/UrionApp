@@ -1,0 +1,142 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_5_80"
+        android:background="@drawable/toptitle"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/user"
+               android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+              android:background="@drawable/button" 
+            android:layout_weight="5"
+             />
+
+        <TextView
+            android:id="@+id/state"
+          android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5"
+            android:text=" " />
+         <TextView
+           android:id="@+id/w"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+             android:layout_weight="3"    
+           android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/blue"
+           android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+           android:layout_weight="6"
+            android:background="#00000000"
+            android:src="@drawable/bluetooth" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_6_80"
+        android:text="  Please sit down and keep quiet"
+        android:textColor="#000000"
+        android:textSize="@dimen/height_3_80" />
+
+    <LinearLayout
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+             android:orientation="horizontal" 
+           android:layout_weight="2"
+        >
+        <LinearLayout
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+           android:orientation="vertical" 
+           android:gravity="center"
+           android:layout_weight="1"
+        >
+           <ImageView
+           android:id="@+id/heart"
+                android:layout_width="@dimen/width_20_80"
+                android:layout_height="@dimen/width_15_80" />
+
+        <TextView
+            android:id="@+id/mmhg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#000000"
+            android:textSize="@dimen/height_5_80"  />
+
+     
+
+        <TextView
+            android:id="@+id/warning"
+               android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="      mmHg"
+            android:textColor="#000000"
+            android:textSize="@dimen/height_3_80"  />
+        </LinearLayout>
+
+        <ImageView
+             android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_weight="5"               
+              android:src="@drawable/kd"  />
+
+        <ProgressBar
+            android:id="@+id/progress"
+           style="@style/progressBar"
+             android:layout_weight="5"
+             android:background="@drawable/bg"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:layout_gravity="right"
+             android:max="300"/>
+ </LinearLayout>
+
+
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="@dimen/width_25_80"
+        android:layout_height="@dimen/height_7_80"
+        android:layout_gravity="center"
+        android:background="@drawable/stop" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:background="@drawable/down1"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home0" />
+
+        <ImageButton
+            android:id="@+id/treads"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/trends1" />
+
+        <ImageButton
+            android:id="@+id/history1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/history1" />
+    </LinearLayout>
+
+</LinearLayout>

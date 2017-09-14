@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="connect_message">
+        <item>Pair fail,please return to Start.</item>
+        <item>Device connection is lost</item>
+    </string-array>
+    <string-array name="connect_state">
+    	<item>connecting...</item>
+    	 <item>Not connected</item> 
+    	 <item>The connected </item>
+
+    </string-array>
+    <color name="LightSteelgreen"> #00BFFF</color>
+    <color name="black"> #000000</color>
+    <color name="red">#FF0000</color>
+    <color name="white"> #FFFFFF</color>
+    <string name="app_name">Wireless BP</string>
+    <string name="dia">舒张压：</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="main_btn_btn1">发送0xa5</string>
+    <string name="main_btn_btn2">按钮2</string>
+    <string name="main_btn_start">启动</string>
+    <string name="main_btn_view">关机</string>
+    <string name="main_text_state">状态：</string>
+    <string name="menu_settings">Settings</string>
+    <string name="none_found">No connection is established</string>
+    <string name="none_paired">Not already paired device</string>
+    <string name="pul">脉搏：</string>
+    <string name="scanning">Scan the unknown device...</string>
+    <string name="select_device">Select a device to connect</string>
+    <string name="sys">收缩压：</string>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="progressBar" parent="android:Widget.ProgressBar.Horizontal">
+		<item name="android:indeterminateOnly">false</item>
+		<item name="android:progressDrawable">@drawable/progress_color_vertical</item>
+		<item name="android:minHeight">5dip</item>
+		<item name="android:maxHeight">5dip</item>
+
+銆�銆�</style>
+</resources>
