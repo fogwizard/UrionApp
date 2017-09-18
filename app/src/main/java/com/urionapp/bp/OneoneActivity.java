@@ -176,7 +176,6 @@ public class OneoneActivity extends Activity implements OnClickListener {
 			int sys = data.getSys();
 			int dia = data.getDia();
 			int pul = data.getPul();
-
 			Intent intent = new Intent(OneoneActivity.this, OneActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("name", ggname);

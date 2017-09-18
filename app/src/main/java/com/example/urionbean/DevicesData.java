@@ -68,4 +68,7 @@ public class DevicesData {
         this.pul_min = pul_min;
         this.mmol_L = mmol_L;
     }
+    public DevicesData() {
+
+    }
 }

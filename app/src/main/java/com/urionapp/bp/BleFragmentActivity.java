@@ -239,44 +239,6 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 		}
 	}
 	
-	
-	
-	
-//	@Override
-//	public void onNeutralButtonClicked(int requestCode) {
-//		if(42 ==  requestCode){
-//			getTipText().setText("请开启蓝牙");
-//			getTipText().setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					// TODO Auto-generated method stub
-//					showBleDialog();
-//				}
-//			});
-//			bleDialog.dismiss();
-//		}
-//	}
-
-//	@Override
-//	public void onPositiveButtonClicked(int requestCode) {
-//		if (42 == requestCode) {
-//			bleDialog.dismiss();
-//
-//			Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
-//			startActivity(intent);
-//
-//			getTipText().setText("请开启蓝牙");
-//			getTipText().setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					// TODO Auto-generated method stub
-//					showBleDialog();
-//				}
-//			});
-//		}
-//	}
-	
-
 	class BleBroadCastRecever extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
