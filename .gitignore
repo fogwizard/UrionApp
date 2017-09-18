@@ -2,3 +2,4 @@
 .tags_sorted_by_file
 *.class
 *.dex
+app/build

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,7 @@ import com.example.urionservice.BluetoothLeService;
 import com.urionapp.bp.R;
 
 public class OneActivity extends Activity implements OnClickListener {
+	public Handler handler = new Handler(Looper.getMainLooper());
 	private ImageButton thread, history, save, ignore;
 	private Button user;
 	private Data data;
@@ -91,6 +94,17 @@ public class OneActivity extends Activity implements OnClickListener {
 		syse.setText(sys + "");
 		diae.setText(dia + "");
 		pule.setText(pul + "");
+		handler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Intent one = new Intent(OneActivity.this, MainActivity.class);
+				one.putExtra("gname", name);
+				startActivity(one);
+				finish();
+			}
+		}, 2000);
 	}
 
 	@Override
