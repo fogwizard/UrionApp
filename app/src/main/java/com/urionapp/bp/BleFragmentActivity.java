@@ -75,13 +75,21 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 		if(mBluetoothAdapter.isEnabled()){
 			startScan();
 		}else{
-			showBleDialog();
+			startScanDelay();// DEBUG　showBleDialog();
 		}
 		
 		//L.d("-------------------->"+mBluetoothAdapter);
 	}
-	
-	
+
+	private void startScanDelay() {
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				startScan();
+			}
+		}, 5000);
+	}
+
 	public BleFragmentActivity() {
 	}
 
