@@ -122,8 +122,11 @@ public class BluetoothReportor extends Thread {
             Response response=okHttpClient.newCall(request).execute();
             if(response.isSuccessful()){
                 Log.i(TAG,response.body().string());
+            }else {
+                Log.i(TAG,"Do post un successful, pls check server");
             }
         } catch (IOException e) {
+            Log.i(TAG,"Do Post Exception!");
             e.printStackTrace();
         }
         return true;
@@ -134,6 +137,7 @@ public class BluetoothReportor extends Thread {
         // TODO
         long  now = new Date().getTime();
         if(now - last_now <2000){
+            last_now = now;
             return;
         }
         last_now = now;
