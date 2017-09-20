@@ -57,9 +57,13 @@ public class BluetoothReportor extends Thread {
         return macSerial;
     }
 
-    String getCustomUser() {
+    static String getCustomUser() {
         long user = 1;
-        File file = new File("/proc/uptime");
+        File file = new File("/proc/user_label");
+        if(!file.exists()){
+            Log.d(TAG, "/proc/user_label doesn't exist,fall back to UserA");
+            return "UserA";
+        }
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -87,8 +91,7 @@ public class BluetoothReportor extends Thread {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = df.format(new Date());
         DevicesData devicesDatas = new DevicesData();
-        //devicesDatas.setUserName(getCustomUser());
-        devicesDatas.setUserName("UserA");
+        devicesDatas.setUserName(getCustomUser());
         /* 0: 血压计  1：血糖计*/
         switch (type) {
         case 0:
@@ -112,7 +115,7 @@ public class BluetoothReportor extends Thread {
         RequestBody requestBody = RequestBody.create(REQ_JSON, MsgStr);
         //创建一个请求对象
         Request request = new Request.Builder()
-        .url("http://doc.newmicrotech.cn:8080/app_web/physical/doc")
+        .url("http://doc.newmicrotech.cn:8080/physical/doc")
         .post(requestBody)
         .build();
         try {
@@ -120,10 +123,10 @@ public class BluetoothReportor extends Thread {
             if(response.isSuccessful()) {
                 Log.i(TAG,"Do post success,res="+response.body().string());
             } else {
-                Log.i(TAG,"Do post err, req"+ MsgStr);
+                Log.i(TAG,"Do post err, req="+ MsgStr);
             }
         } catch (IOException e) {
-            Log.i(TAG,"Do Post Exception!");
+            Log.i(TAG,"Do Post Exception, req="+ MsgStr);
             e.printStackTrace();
         }
         return true;
@@ -152,4 +155,8 @@ public class BluetoothReportor extends Thread {
         this.pul  = pul;
         this.mmol = mmol;
     }
+    public static void main(String[] args) {
+        System.out.print(getCustomUser());
+    }
+
 }

@@ -104,12 +104,12 @@
         "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\toptitle.png"
     },
     {
-        "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\history1.png",
-        "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\history1.png"
-    },
-    {
         "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\bluetoothno.png",
         "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\bluetoothno.png"
+    },
+    {
+        "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\history1.png",
+        "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\history1.png"
     },
     {
         "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\stop.png",
