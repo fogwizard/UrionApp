@@ -140,6 +140,10 @@
         "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\image1.png"
     },
     {
+        "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\newuser.png",
+        "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\newuser.png"
+    },
+    {
         "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\table3.png",
         "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\table3.png"
     },
@@ -150,10 +154,6 @@
     {
         "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\userbg.png",
         "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\userbg.png"
-    },
-    {
-        "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\newuser.png",
-        "source": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\src\\main\\res\\drawable-mdpi\\newuser.png"
     },
     {
         "merged": "C:\\Users\\xiaochi\\Desktop\\workspace\\UrionApp1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\month31.png",

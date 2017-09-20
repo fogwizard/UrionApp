@@ -31,7 +31,7 @@ public class BluetoothReportor extends Thread {
     int sys;
     int dia;
     int pul;
-    int mmol;
+    float mmol;
     int type;
     static long last_now;
     public static final String TAG = "BluetoothReportor";
@@ -95,7 +95,7 @@ public class BluetoothReportor extends Thread {
             devicesDatas.setDeviceName("血压计");
             break;
         case 1:
-            devicesDatas.setDeviceName("血糖仪");
+            devicesDatas.setDeviceName("血糖计");
             break;
         }
         devicesDatas.setSys_mmHg(sys);
@@ -118,9 +118,9 @@ public class BluetoothReportor extends Thread {
         try {
             Response response=okHttpClient.newCall(request).execute();
             if(response.isSuccessful()) {
-                Log.i(TAG,response.body().string());
+                Log.i(TAG,"Do post success,res="+response.body().string());
             } else {
-                Log.i(TAG,"Do post un successful, pls check server");
+                Log.i(TAG,"Do post err, req"+ MsgStr);
             }
         } catch (IOException e) {
             Log.i(TAG,"Do Post Exception!");
@@ -140,15 +140,16 @@ public class BluetoothReportor extends Thread {
         last_now = now;
         Report2Server(type,
                       Integer.toString(sys),Integer.toString(dia),Integer.toString(pul),
-                      Integer.toString(mmol)
+                      Float.toString(mmol)
                      );
     }
 
-    public BluetoothReportor(int type,int sys,int dia,int pul) {
+    public BluetoothReportor(int type,int sys,int dia,int pul,float mmol) {
         /* 0: 血压计  1：血糖计*/
         this.type = type;
         this.sys  = sys;
         this.dia  = dia;
         this.pul  = pul;
+        this.mmol = mmol;
     }
 }

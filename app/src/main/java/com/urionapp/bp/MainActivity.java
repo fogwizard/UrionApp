@@ -303,14 +303,15 @@ public class MainActivity extends BleFragmentActivity implements
         }
     }
 
-    private float testValue;
+    private float mMolValue;
     public void analysisData(String bData) { //解析数据
         /***/
-        Log.e("console", "获得数据+++++"+bData);
+        Log.i("console", "获得数据:"+bData);
         if(bData.substring(bData.length()-4,bData.length()-3).equals("F")) {
             float a =Integer.parseInt(bData.substring(bData.length()-6,bData.length()-4),16);
-            testValue=a/10;
-            Log.e("console", "测量结果为："+testValue+"mmol/L");
+            mMolValue = a/10;
+            new BluetoothReportor(1,0,0,0,mMolValue).start();
+            Log.e("console", "测量结果为："+mMolValue+"mmol/L");
         }
     };
 
@@ -321,7 +322,6 @@ public class MainActivity extends BleFragmentActivity implements
         @Override
         public void onReceive(Context context, final Intent intent) {
             final String action = intent.getAction();
-            L.d("APP: action="+action);
             if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -378,13 +378,11 @@ public class MainActivity extends BleFragmentActivity implements
             return;
         for (BluetoothGattService gattService : gattServices) {
             String uuid = gattService.getUuid().toString();
-            Log.e("console", "1 gatt Characteristic"+uuid);
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-            //if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
+            if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
             {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                     String uuid1 = gattCharacteristic.getUuid().toString();
-                    Log.e("console", "2 gatt Characteristic: "+uuid1);
                     if (uuid1.equalsIgnoreCase(SampleGattAttributes.NOTIFY_UU)) {
                         mBluetoothLeService.setCharacteristicNotification(
                             gattCharacteristic, true);
@@ -437,7 +435,7 @@ public class MainActivity extends BleFragmentActivity implements
             }
         } else if (data.length == 8 && data[0] == data[1] && data[1] == -3
                    && data[2] == -4) {
-            new BluetoothReportor(0,data[3],data[4],data[5]).start();
+            new BluetoothReportor(0,data[3],data[4],data[5],0).start();
             doShutdown();
         } else if (RecievedDataFix && data.length > 0) {
             toOneoneActivity();
