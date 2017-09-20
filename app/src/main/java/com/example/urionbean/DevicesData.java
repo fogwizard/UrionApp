@@ -69,6 +69,5 @@ public class DevicesData {
         this.mmol_L = mmol_L;
     }
     public DevicesData() {
-
     }
 }

@@ -57,7 +57,7 @@ public class BluetoothReportor extends Thread {
         return macSerial;
     }
 
-     String getCustomUser() {
+    String getCustomUser() {
         long user = 1;
         File file = new File("/proc/uptime");
         BufferedReader reader = null;
@@ -82,24 +82,22 @@ public class BluetoothReportor extends Thread {
         }
     }
 
-     boolean Report2Server(int type,String sys, String dia, String pul, String mmol) {
+    boolean Report2Server(int type,String sys, String dia, String pul, String mmol) {
         String device_id = getMac();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = df.format(new Date());
         DevicesData devicesDatas = new DevicesData();
-
         //devicesDatas.setUserName(getCustomUser());
         devicesDatas.setUserName("UserA");
-
-         /* 0: 血压计  1：血糖计*/
-         switch (type){
-             case 0:
-                 devicesDatas.setDeviceName("血压计");
-                 break;
-             case 1:
-                 devicesDatas.setDeviceName("血糖仪");
-                 break;
-         }
+        /* 0: 血压计  1：血糖计*/
+        switch (type) {
+        case 0:
+            devicesDatas.setDeviceName("血压计");
+            break;
+        case 1:
+            devicesDatas.setDeviceName("血糖仪");
+            break;
+        }
         devicesDatas.setSys_mmHg(sys);
         devicesDatas.setDia_mmHg(dia);
         devicesDatas.setPul_min(pul);
@@ -109,20 +107,19 @@ public class BluetoothReportor extends Thread {
         content.setContent1(devicesDatas);
         dataBean dBean = new dataBean(1, 1001, device_id, content);
         BaseMessageBean baseBean = new BaseMessageBean("Come in later", now, 0, dBean);
-
         String MsgStr = JSON.toJSONString(baseBean);
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(REQ_JSON, MsgStr);
         //创建一个请求对象
         Request request = new Request.Builder()
-                .url("http://doc.newmicrotech.cn:8080/app_web/physical/doc")
-                .post(requestBody)
-                .build();
+        .url("http://doc.newmicrotech.cn:8080/app_web/physical/doc")
+        .post(requestBody)
+        .build();
         try {
             Response response=okHttpClient.newCall(request).execute();
-            if(response.isSuccessful()){
+            if(response.isSuccessful()) {
                 Log.i(TAG,response.body().string());
-            }else {
+            } else {
                 Log.i(TAG,"Do post un successful, pls check server");
             }
         } catch (IOException e) {
@@ -136,15 +133,15 @@ public class BluetoothReportor extends Thread {
     public void run() {
         // TODO
         long  now = new Date().getTime();
-        if(now - last_now <2000){
+        if(now - last_now <2000) {
             last_now = now;
             return;
         }
         last_now = now;
         Report2Server(type,
-                Integer.toString(sys),Integer.toString(dia),Integer.toString(pul),
-                Integer.toString(mmol)
-        );
+                      Integer.toString(sys),Integer.toString(dia),Integer.toString(pul),
+                      Integer.toString(mmol)
+                     );
     }
 
     public BluetoothReportor(int type,int sys,int dia,int pul) {
