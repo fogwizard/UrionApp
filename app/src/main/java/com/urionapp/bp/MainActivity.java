@@ -379,7 +379,7 @@ public class MainActivity extends BleFragmentActivity implements
         for (BluetoothGattService gattService : gattServices) {
             String uuid = gattService.getUuid().toString();
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
-            if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
+            //if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
             {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                     String uuid1 = gattCharacteristic.getUuid().toString();
