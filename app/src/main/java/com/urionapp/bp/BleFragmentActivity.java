@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.example.urionclass.BleServiceHelper;
 import com.example.urionclass.L;
 import com.example.urionclass.SampleGattAttributes;
-import com.example.urionservice.BluetoothLeService;
 
 
 /**
@@ -120,15 +119,15 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				stopScan();
 			}
-		}, 15000);
+		}, 10000);
 	}
 	
 	
 
 	public void stopScan() {
 		// mScanning = false;
-		L.d("-------------------->"+mBluetoothAdapter);
-		L.d("-------------------->"+mLeScanCallback);
+		L.d("APP:----------------->"+mBluetoothAdapter);
+		L.d("APP:----------------->"+mLeScanCallback);
 		
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
 		// center_button.setText("停止");
@@ -151,6 +150,10 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 						mLeDevices.add(device);
 						L.d("device-->" + device.getName());
 						if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())||"BLE to UART_2".equals(device.getName())) {
+							bleState = ble_connecting;
+							mDevice = device;
+							startService();
+						}else if(-1 != device.getName().indexOf("BJYC")){
 							bleState = ble_connecting;
 							mDevice = device;
 							startService();

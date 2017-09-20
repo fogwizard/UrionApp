@@ -73,7 +73,7 @@
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Dialog" />
 
-        <service android:name="com.example.urionservice.BluetoothLeService" >
+        <service android:name="com.urionapp.bp.BluetoothLeService" >
         </service>
     </application>
 

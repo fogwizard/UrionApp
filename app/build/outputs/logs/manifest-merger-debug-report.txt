@@ -151,7 +151,7 @@ ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidMani
 		ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidManifest.xml:75:13-56
 	android:name
 		ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidManifest.xml:72:13-62
-service#com.example.urionservice.BluetoothLeService
+service#com.urionapp.bp.BluetoothLeService
 ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidManifest.xml:77:9-78:19
 	android:name
-		ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidManifest.xml:77:18-76
+		ADDED from C:\Users\xiaochi\Desktop\workspace\UrionApp1\app\src\main\AndroidManifest.xml:77:18-52

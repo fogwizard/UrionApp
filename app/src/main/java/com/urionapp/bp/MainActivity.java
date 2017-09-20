@@ -28,7 +28,6 @@ import com.example.urionbean.Msg;
 import com.example.urionclass.L;
 import com.example.urionclass.MySpinnerButton;
 import com.example.urionclass.SampleGattAttributes;
-import com.example.urionservice.BluetoothLeService;
 
 //UrionApp_2015_6_7_1.apk
 public class MainActivity extends BleFragmentActivity implements
@@ -143,6 +142,7 @@ public class MainActivity extends BleFragmentActivity implements
                 break;
         }
     }
+
 
     protected void onDestroy() {
         super.onDestroy();
@@ -327,6 +327,17 @@ public class MainActivity extends BleFragmentActivity implements
 
     }
 
+    private float testValue;
+    public void analysisData(String bData){//解析数据
+        /***/
+        Log.e("console", "获得数据+++++"+bData);
+        if(bData.substring(bData.length()-4,bData.length()-3).equals("F")){
+            float a =Integer.parseInt(bData.substring(bData.length()-6,bData.length()-4),16);
+            testValue=a/10;
+            Log.e("console", "测量结果为："+testValue+"mmol/L");
+        }
+    };
+
     /*
      * 监听广播类，用来实施的接受数据
      */
@@ -334,33 +345,29 @@ public class MainActivity extends BleFragmentActivity implements
         @Override
         public void onReceive(Context context, final Intent intent) {
             final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
-                    .equals(action)) {
-
-                displayGattServices(mBluetoothLeService
-                        .getSupportedGattServices());
-
+            L.d("APP: action="+action);
+            if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                // 获取面积图的数据
-                L.d("ble get data ");
-                byte[] data = intent.getExtras().getByteArray("data");
-                L.d(Arrays.toString(data));
-                doWithData(data);
-
+                if(-1 != mDevice.getName().indexOf("BJYC") ){
+                    analysisData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                } else {
+                    byte[] data = intent.getExtras().getByteArray("data");
+                    L.d("ble get data:" + Arrays.toString(data));
+                    doWithData(data);
+                }
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
                     .equals(action)) {
                 state.setText("disConnected");
                 bluetooth.setImageResource(R.drawable.bluetoothno);
                 bleState = ble_disConnected;
-
                 // isConnected = false;
-
+                L.d("APP: Bluetooth disConnected");
             } else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-
-            } else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
-                    .equals(action)) {
+                L.d("APP: Bluetooth Connected");
+            } else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS.equals(action)) {
                 // isNotifyAble = true;
-
+                L.d("APP Gatt Write Success");
                 mState = Msg.MESSAGE_STATE_CONNECTED;
                 onMessage(new Msg(mState, ""));
                 backStop = false;
@@ -397,11 +404,13 @@ public class MainActivity extends BleFragmentActivity implements
             return;
         for (BluetoothGattService gattService : gattServices) {
             String uuid = gattService.getUuid().toString();
-            List<BluetoothGattCharacteristic> gattCharacteristics = gattService
-                    .getCharacteristics();
-            if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU)) {
+            Log.e("console", "1 gatt Characteristic"+uuid);
+            List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
+            //if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
+            {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                     String uuid1 = gattCharacteristic.getUuid().toString();
+                    Log.e("console", "2 gatt Characteristic: "+uuid1);
                     if (uuid1.equalsIgnoreCase(SampleGattAttributes.NOTIFY_UU)) {
                         mBluetoothLeService.setCharacteristicNotification(
                                 gattCharacteristic, true);
@@ -409,11 +418,15 @@ public class MainActivity extends BleFragmentActivity implements
                     if (uuid1.equalsIgnoreCase(SampleGattAttributes.WRITE_UU)) {
                         gattCharacteristicWrite = gattCharacteristic;
                     }
+                    if (uuid1.contains("2a18"))
+                    {
+                        mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
+                        mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    }
                 }
             }
         }
     }
-
 
 
     static int request_count = 0;

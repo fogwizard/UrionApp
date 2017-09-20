@@ -20,8 +20,6 @@ import android.widget.TextView;
 
 import com.example.urionbean.Data;
 import com.example.uriondb.DBOpenHelper;
-import com.example.urionservice.BluetoothLeService;
-import com.urionapp.bp.R;
 
 public class OneActivity extends Activity implements OnClickListener {
 	public Handler handler = new Handler(Looper.getMainLooper());

@@ -22,8 +22,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.uriondb.DBOpenHelper;
-import com.example.urionservice.BluetoothLeService;
-import com.urionapp.bp.R;
 
 public class ThreadActivity extends Activity implements OnClickListener {
 	private ImageButton email, home, thread;

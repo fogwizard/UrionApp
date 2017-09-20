@@ -35,9 +35,7 @@ import com.example.urionbean.Pressure;
 import com.example.urionclass.L;
 import com.example.urionclass.SampleGattAttributes;
 import com.example.uriondb.DBOpenHelper;
-import com.example.urionservice.BluetoothLeService;
 import com.example.urionuntil.CodeFormat;
-import com.urionapp.bp.R;
 
 public class OneoneActivity extends Activity implements OnClickListener {
 	private ImageButton stop, home, thread, history;

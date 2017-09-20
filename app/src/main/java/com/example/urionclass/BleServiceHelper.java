@@ -3,7 +3,7 @@ package com.example.urionclass;
 
 import android.content.IntentFilter;
 
-import com.example.urionservice.BluetoothLeService;
+import com.urionapp.bp.BluetoothLeService;
 
 
 public class BleServiceHelper {

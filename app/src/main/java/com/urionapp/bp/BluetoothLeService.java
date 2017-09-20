@@ -1,4 +1,4 @@
-package com.example.urionservice;
+package com.urionapp.bp;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +23,9 @@ import android.util.Log;
 import com.example.urionclass.SampleGattAttributes;
 
 public class BluetoothLeService extends Service {
+
+    public static final UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
+	public static final String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
 	private final static String TAG = BluetoothLeService.class.getSimpleName();
 	private BluetoothManager mBluetoothManager;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -122,10 +125,27 @@ public class BluetoothLeService extends Service {
 			Bundle bundle = new Bundle();
 			bundle.putByteArray("data", data);
 			intent.putExtras(bundle);
-			sendBroadcast(intent);
-		}else{
-			
+		}else if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+            int format;
+            if ((characteristic.getProperties() & STATE_CONNECTING) != 0) {
+                format = 18;
+                Log.d("console", "Heart rate format UINT16.");
+            } else {
+                format = 17;
+                Log.d("console", "Heart rate format UINT8.");
+            }
+            int heartRate = characteristic.getIntValue(format, STATE_CONNECTING).intValue();
+            Object[] objArr = new Object[STATE_CONNECTING];
+            objArr[0] = Integer.valueOf(heartRate);
+            Log.d("console", String.format("Received heart rate: %d", objArr));
+            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+        } else {
+            byte[] data = characteristic.getValue();
+            if (data != null && data.length > 0) {
+                intent.putExtra(EXTRA_DATA, StringByte.encodeHexStr(data, false));
+            }			
 		}
+		sendBroadcast(intent);
 	}
 
 	public class LocalBinder extends Binder {
@@ -217,13 +237,12 @@ public class BluetoothLeService extends Service {
 		mBluetoothGatt.disconnect();
 	}
 
-	public void close() {
-		if (mBluetoothGatt == null) {
-			return;
-		}
-		mBluetoothGatt.close();
-		mBluetoothGatt = null;
-	}
+    public void close() {
+        if (this.mBluetoothGatt != null) {
+            this.mBluetoothGatt.close();
+            this.mBluetoothGatt = null;
+        }
+    }
 
 	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
@@ -232,8 +251,7 @@ public class BluetoothLeService extends Service {
 		mBluetoothGatt.readCharacteristic(characteristic);
 	}
 
-	public void setCharacteristicNotification(
-			BluetoothGattCharacteristic characteristic, boolean enabled) {
+	public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			return;
 		}
@@ -246,7 +264,13 @@ public class BluetoothLeService extends Service {
 			descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 
 			mBluetoothGatt.writeDescriptor(descriptor);
-		}
+		} else if (characteristic.getUuid().toString().indexOf("2a18") > -1) {
+        	Log.d("console", "ppppppppppppp" + characteristic.getUuid().toString());
+            Log.d("console", "得到通知！");
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            this.mBluetoothGatt.writeDescriptor(descriptor);
+        }
 	}
 
 	public List<BluetoothGattService> getSupportedGattServices() {
