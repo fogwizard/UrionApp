@@ -89,9 +89,9 @@ public class MainActivity extends BleFragmentActivity implements
         history.setOnClickListener(this);
         list.add("User");
         if (fan == 0) {
-            mSpinnerBtn.setText("User");
+            mSpinnerBtn.setText("UserA");
         } else {
-            mSpinnerBtn.setText(getIntent().getExtras().getString("gname"));
+            mSpinnerBtn.setText("UserA");
             state.setText("aaaa");
         }
         i++;
@@ -340,6 +340,7 @@ public class MainActivity extends BleFragmentActivity implements
                 // isConnected = false;
                 L.d("APP: Bluetooth disConnected");
             } else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mSpinnerBtn.setText(BluetoothReportor.getCustomUser());
                 L.d("APP: Bluetooth Connected");
             } else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS.equals(action)) {
                 // isNotifyAble = true;

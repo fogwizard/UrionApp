@@ -336,9 +336,8 @@ public class OneoneActivity extends Activity implements OnClickListener {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 // 获取面积图的数据
-                L.d("ble get data ");
                 byte[] data = intent.getExtras().getByteArray("data");
-                L.d(Arrays.toString(data));
+                L.d("ble get data " + Arrays.toString(data));
                 if(data.length >=6) {
                     doWithData(data);
                 }
