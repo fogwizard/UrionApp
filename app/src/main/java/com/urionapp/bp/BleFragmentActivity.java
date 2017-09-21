@@ -32,9 +32,6 @@ import com.example.urionclass.SampleGattAttributes;
  *	@Time 2015年5月15日上午11:53:53<br>
  */
 public abstract class BleFragmentActivity extends FragmentActivity {
-
-
-
     public final static int ble_scaning = 0;
     public final static int ble_connecting = 1;
     public final static int ble_connected = 3;
@@ -67,28 +64,12 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         myBleRecever = new BleBroadCastRecever();
         registerReceiver(myBleRecever, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         initBlue();
-        if(mBluetoothAdapter.isEnabled()) {
-            startScan();
-        } else {
-            startScanDelay();// DEBUG　showBleDialog();
-        }
+        new scanf_le_thread(mBluetoothAdapter.isEnabled()).start();
         //L.d("-------------------->"+mBluetoothAdapter);
-    }
-
-    private void startScanDelay() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startScan();
-            }
-        }, 5000);
     }
 
     public BleFragmentActivity() {
     }
-
-
-
 
     public void initBlue() {
         IntentFilter filter =  BleServiceHelper.makeGattUpdateIntentFilter();
@@ -101,21 +82,58 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         L.d("-------------------->"+mBluetoothAdapter);
         L.d("-------------------->"+mLeScanCallback);
     }
+    class scanf_le_thread extends  Thread  {
+        boolean enable;
+        int  s_bleState = ble_off;
+        int last_s_bleState = ble_off;
+        public void run() {
+            while (true) {
+                switch (s_bleState) {
+                case ble_off:
+                    if (mBluetoothAdapter.isEnabled()) {
+                        startScan();
+                        s_bleState = ble_scaning;
+                    }
+                    break;
+                case ble_scaning:
+                    if(bleState == ble_connecting){
+                        s_bleState = ble_connecting;
+                    }
+                    break;
+                case ble_connecting:
+                    stopScan();
+                    s_bleState = ble_on;
+                    break;
+                case ble_on:
+                case ble_connected:
+                case ble_disConnected:
+                    if(bleState == ble_disConnected){
+                        s_bleState = ble_off;
+                    }
+                    break;
+                }
+                if(s_bleState != last_s_bleState){
+                    L.d("[xiaochi]s_state="+s_bleState+"\nlast="+last_s_bleState);
+                    last_s_bleState = s_bleState;
+                }
 
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        public scanf_le_thread( boolean enable) {
+            this.enable = enable;
+        }
+    }
     public void startScan() {
         mDevice = null;
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         bleState = ble_scaning;
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                stopScan();
-            }
-        }, 10000);
     }
-
-
 
     public void stopScan() {
         // mScanning = false;
@@ -124,8 +142,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
         // center_button.setText("停止");
         if(mDevice == null) {
-            bleState = ble_scaning;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
+            bleState = ble_off;
         }
     }
 
@@ -139,16 +156,16 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                 public void run() {
                     if (!mLeDevices.contains(device)) {
                         mLeDevices.add(device);
-                        L.d("device-->" + device.getName());
-                        if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())||"BLE to UART_2".equals(device.getName())) {
-                            bleState = ble_connecting;
-                            mDevice = device;
-                            startService();
-                        } else if(-1 != device.getName().indexOf("BJYC")) {
-                            bleState = ble_connecting;
-                            mDevice = device;
-                            startService();
-                        }
+                    }
+                    L.d("device-->" + device.getName());
+                    if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())||"BLE to UART_2".equals(device.getName())) {
+                        bleState = ble_connecting;
+                        mDevice = device;
+                        startService();
+                    } else if(-1 != device.getName().indexOf("BJYC")) {
+                        bleState = ble_connecting;
+                        mDevice = device;
+                        startService();
                     }
                 }
             });
@@ -158,9 +175,15 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 
 
     protected void startService() {
+        if (isBindServise) {
+            unbindService(mServiceConnection);
+            Intent service = new Intent(this, BluetoothLeService.class);
+            stopService(service);
+            isBindServise = false;
+        }
         if(!isBindServise ) {
             Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-            // 启动services
+            //startService(gattServiceIntent);
             isBindServise = bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
         } else {
             if(mBluetoothLeService != null) {
@@ -193,6 +216,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             mBluetoothLeService = null;
+            L.d("[xiaochi] OnServiceDisconnected ");
         }
     };
 //	private DialogFragment bleDialog;
@@ -245,8 +269,8 @@ public abstract class BleFragmentActivity extends FragmentActivity {
 //				getTipText().setText("已开启蓝牙");
 //				getTipText().setOnClickListener(null);
 //				initBlue();
-                bleState = ble_on;
-                startScan();
+               // bleState = ble_on;
+                // startScan();
                 break;
             case BluetoothAdapter.STATE_TURNING_OFF:
                 bleState = ble_off;

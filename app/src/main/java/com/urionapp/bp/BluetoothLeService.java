@@ -62,6 +62,8 @@ public class BluetoothLeService extends Service {
                 mConnectionState = STATE_DISCONNECTED;
                 Log.i(TAG, "Disconnected from GATT server.");
                 broadcastUpdate(intentAction);
+                disconnect();
+                close();
             }
         }
         @Override
@@ -192,6 +194,8 @@ public class BluetoothLeService extends Service {
                   "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
+        disconnect();
+
         final BluetoothDevice device = mBluetoothAdapter
                                        .getRemoteDevice(address);
         if (device == null) {

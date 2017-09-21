@@ -60,7 +60,7 @@ public class BluetoothReportor extends Thread {
     static String getCustomUser() {
         long user = 1;
         File file = new File("/proc/user_label");
-        if(!file.exists()){
+        if(!file.exists()) {
             Log.d(TAG, "/proc/user_label doesn't exist,fall back to UserA");
             return "UserA";
         }
