@@ -158,7 +158,9 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                         mLeDevices.add(device);
                     }
                     L.d("device-->" + device.getName());
-                    if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())||"BLE to UART_2".equals(device.getName())) {
+                    if(null == device.getName()) {
+
+                    } else if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())) {
                         bleState = ble_connecting;
                         mDevice = device;
                         startService();

@@ -121,7 +121,11 @@ public class BluetoothReportor extends Thread {
         try {
             Response response=okHttpClient.newCall(request).execute();
             if(response.isSuccessful()) {
-                Log.i(TAG,"Do post success,res="+response.body().string());
+                String res = response.body().string();
+                respondJsonBean resBean = JSON.parseObject(res,respondJsonBean.class);
+                String msgLog = String.format("Do post success,res=%s\nmsg=%s,code=%d",
+                        res,resBean.getMsg(),resBean.getCode());
+                Log.i(TAG,msgLog);
             } else {
                 Log.i(TAG,"Do post err, req="+ MsgStr);
             }
