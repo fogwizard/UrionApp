@@ -87,6 +87,7 @@ public class MainActivity extends BleFragmentActivity implements
         thread.setOnClickListener(this);
         edit.setOnClickListener(this);
         history.setOnClickListener(this);
+        new UpdateCustomUser().start();
         list.add("User");
         if (fan == 0) {
             mSpinnerBtn.setText("UserA");
@@ -96,6 +97,31 @@ public class MainActivity extends BleFragmentActivity implements
         }
         i++;
         fan++;
+    }
+
+    class UpdateCustomUser  extends  Thread {
+        public void run() {
+            String LastUser = BluetoothReportor.getCustomUser();
+            while(true) {
+                String NewUser = BluetoothReportor.getCustomUser();
+                if(!NewUser.equals(LastUser)){
+                    L.d("new="+NewUser+",last="+LastUser);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSpinnerBtn.setText(BluetoothReportor.getCustomUser());
+                        }
+                    }, 50);
+                    LastUser = NewUser;
+                }
+
+                try {
+                    Thread.sleep(380);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void onClick(View v) {
@@ -340,7 +366,6 @@ public class MainActivity extends BleFragmentActivity implements
                 // isConnected = false;
                 L.d("APP: Bluetooth disConnected");
             } else if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mSpinnerBtn.setText(BluetoothReportor.getCustomUser());
                 L.d("APP: Bluetooth Connected");
             } else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS.equals(action)) {
                 // isNotifyAble = true;
