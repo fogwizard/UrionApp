@@ -94,11 +94,15 @@ public class BluetoothReportor extends Thread {
         devicesDatas.setUserName(getCustomUser());
         /* 0: 血压计  1：血糖计*/
         switch (type) {
-        case 0:
-            devicesDatas.setDeviceName("血压计");
+        case 0://("血压计");
+            devicesDatas.setDeviceName("BP");
             break;
-        case 1:
-            devicesDatas.setDeviceName("血糖计");
+        case 1://("血糖计");
+            devicesDatas.setDeviceName("GLU");
+            break;
+        case 2://P 心率计
+            break;
+        case 3://SO2 血氧计
             break;
         }
         devicesDatas.setSys_mmHg(sys);
