@@ -88,6 +88,7 @@ public class BluetoothLeService extends Service {
         public void onCharacteristicWrite(BluetoothGatt gatt,
                                           BluetoothGattCharacteristic characteristic, int status) {
             // TODO Auto-generated method stub
+            Log.d("=====xiaochi",characteristic.getValue().toString());
         }
         // 读写特性
         @Override

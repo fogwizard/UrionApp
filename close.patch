@@ -1,0 +1,55 @@
+diff --git a/app/src/main/java/com/urionapp/bp/BluetoothLeService.java b/app/src/main/java/com/urionapp/bp/BluetoothLeService.java
+index 3a63d86..c423102 100644
+--- a/app/src/main/java/com/urionapp/bp/BluetoothLeService.java
++++ b/app/src/main/java/com/urionapp/bp/BluetoothLeService.java
+@@ -62,8 +62,8 @@ public class BluetoothLeService extends Service {
+                 mConnectionState = STATE_DISCONNECTED;
+                 Log.i(TAG, "Disconnected from GATT server.");
+                 broadcastUpdate(intentAction);
+-                disconnect();
+-                close();
++               // disconnect();
++               // close();
+             }
+         }
+         @Override
+diff --git a/app/src/main/java/com/urionapp/bp/MainActivity.java b/app/src/main/java/com/urionapp/bp/MainActivity.java
+index 2ffb940..21e6438 100644
+--- a/app/src/main/java/com/urionapp/bp/MainActivity.java
++++ b/app/src/main/java/com/urionapp/bp/MainActivity.java
+@@ -186,6 +186,7 @@ public class MainActivity extends BleFragmentActivity implements
+                 gattCharacteristicWrite.setValue(send);
+                 mBluetoothLeService.getmBluetoothGatt().writeCharacteristic(
+                     gattCharacteristicWrite);
++                doBluetoothDisconnect(100);
+             }
+         }, 2000);
+     }
+@@ -329,6 +330,19 @@ public class MainActivity extends BleFragmentActivity implements
+         }
+     }
+ 
++    public  void doBluetoothDisconnect(int ms){
++        handler.postDelayed(new Runnable() {
++            @Override
++            public void run() {
++                if(null != mBluetoothLeService) {
++                    mBluetoothLeService.disconnect();
++                    mBluetoothLeService.close();
++                    bleState = ble_disConnected;
++                }
++            }
++        }, ms);
++    }
++
+     private float mMolValue;
+     public void analysisData(String bData) { //解析数据
+         /***/
+@@ -338,6 +352,7 @@ public class MainActivity extends BleFragmentActivity implements
+             mMolValue = a/10;
+             new BluetoothReportor(1,0,0,0,mMolValue).start();
+             Log.e("console", "测量结果为："+mMolValue+"mmol/L");
++            doBluetoothDisconnect(1000);
+         }
+     };
+ 

@@ -186,6 +186,13 @@ public class MainActivity extends BleFragmentActivity implements
                 gattCharacteristicWrite.setValue(send);
                 mBluetoothLeService.getmBluetoothGatt().writeCharacteristic(
                     gattCharacteristicWrite);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        doBluetoothDisconnect(1000);
+                    }
+                }, 1000);
             }
         }, 2000);
     }
@@ -329,6 +336,15 @@ public class MainActivity extends BleFragmentActivity implements
         }
     }
 
+    public  void doBluetoothDisconnect(int ms){
+        if(null != mBluetoothLeService.getmBluetoothGatt()) {
+            Log.d("====","doBluetoothDisconnect");
+            mBluetoothLeService.getmBluetoothGatt().disconnect();
+            mBluetoothLeService.getmBluetoothGatt().close();
+            bleState = ble_disConnected;
+        }
+    }
+
     private float mMolValue;
     public void analysisData(String bData) { //解析数据
         /***/
@@ -338,6 +354,13 @@ public class MainActivity extends BleFragmentActivity implements
             mMolValue = a/10;
             new BluetoothReportor(1,0,0,0,mMolValue).start();
             Log.e("console", "测量结果为："+mMolValue+"mmol/L");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    doBluetoothDisconnect(500);
+                }
+            }, 500);
         }
     };
 
@@ -351,7 +374,9 @@ public class MainActivity extends BleFragmentActivity implements
             if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                if(-1 != mDevice.getName().indexOf("BJYC") ) {
+                if (null == mDevice) {
+                    L.d("mDevice.getName() is NULL");
+                }else if(-1 != mDevice.getName().indexOf("BJYC") ) {
                     analysisData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                 } else {
                     byte[] data = intent.getExtras().getByteArray("data");

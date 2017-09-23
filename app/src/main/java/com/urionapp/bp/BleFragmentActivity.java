@@ -64,7 +64,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         myBleRecever = new BleBroadCastRecever();
         registerReceiver(myBleRecever, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         initBlue();
-        new scanf_le_thread(mBluetoothAdapter.isEnabled()).start();
+        new ScanfleThread(mBluetoothAdapter.isEnabled()).start();
         //L.d("-------------------->"+mBluetoothAdapter);
     }
 
@@ -82,7 +82,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         L.d("-------------------->"+mBluetoothAdapter);
         L.d("-------------------->"+mLeScanCallback);
     }
-    class scanf_le_thread extends  Thread  {
+    class ScanfleThread extends  Thread  {
         boolean enable;
         int  s_bleState = ble_off;
         int last_s_bleState = ble_off;
@@ -91,28 +91,27 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                 switch (s_bleState) {
                 case ble_off:
                     if (mBluetoothAdapter.isEnabled()) {
+                        L.d("[xiaochi]call startScan ");
                         startScan();
                         s_bleState = ble_scaning;
                     }
                     break;
                 case ble_scaning:
-                    if(bleState == ble_connecting){
-                        s_bleState = ble_connecting;
-                    }
-                    break;
                 case ble_connecting:
-                    stopScan();
-                    s_bleState = ble_on;
-                    break;
                 case ble_on:
                 case ble_connected:
                 case ble_disConnected:
-                    if(bleState == ble_disConnected){
+                    if(s_bleState != bleState){
+                        s_bleState =  bleState;
+                    }
+                    if((bleState == ble_disConnected) || (bleState == ble_off)){
+                        L.d("[xiaochi]disConnected found, change state to ble_off");
                         s_bleState = ble_off;
                     }
                     break;
                 }
-                if(s_bleState != last_s_bleState){
+                if(s_bleState != last_s_bleState)
+                {
                     L.d("[xiaochi]s_state="+s_bleState+"\nlast="+last_s_bleState);
                     last_s_bleState = s_bleState;
                 }
@@ -125,7 +124,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
             }
 
         }
-        public scanf_le_thread( boolean enable) {
+        public ScanfleThread( boolean enable) {
             this.enable = enable;
         }
     }
@@ -159,12 +158,17 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                     }
                     L.d("device-->" + device.getName());
                     if(null == device.getName()) {
-
+                        L.d("[xiaochi]Find nothing, Trigger Scan");
+                        bleState = ble_disConnected;
                     } else if (getDeviceName().equals(device.getName()) ||"Wileless BP".equals(device.getName()) ||"Urion BP".equals(device.getName())) {
+                        L.d("[xiaochi]call stopScan");
+                        stopScan();
                         bleState = ble_connecting;
                         mDevice = device;
                         startService();
                     } else if(-1 != device.getName().indexOf("BJYC")) {
+                        L.d("[xiaochi]call stopScan");
+                        stopScan();
                         bleState = ble_connecting;
                         mDevice = device;
                         startService();
