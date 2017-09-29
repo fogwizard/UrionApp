@@ -115,7 +115,12 @@ public class BluetoothLeService extends Service {
                                  final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
         // 这是心率测量配置文件。
-        if (SampleGattAttributes.NOTIFY_UU.equalsIgnoreCase(characteristic.getUuid().toString())) {
+        if (Const.UUID_CHARACTER_RECEIVE.equals(characteristic.getUuid())) {
+            final byte[] data = characteristic.getValue();
+            if (data != null && data.length > 0) {
+                intent.putExtra(EXTRA_DATA,data);
+            }
+        } else if (SampleGattAttributes.NOTIFY_UU.equalsIgnoreCase(characteristic.getUuid().toString())) {
             final byte[] data = characteristic.getValue();
             Bundle bundle = new Bundle();
             bundle.putByteArray("data", data);
@@ -261,6 +266,13 @@ public class BluetoothLeService extends Service {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             this.mBluetoothGatt.writeDescriptor(descriptor);
+        }  else if (Const.UUID_CHARACTER_RECEIVE.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(Const.UUID_CLIENT_CHARACTER_CONFIG);
+            if(enabled)
+                descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            else
+                descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
         }
     }
 

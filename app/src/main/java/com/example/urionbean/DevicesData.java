@@ -10,6 +10,7 @@ public class DevicesData {
     String sys_mmHg;
     String dia_mmHg;
     String pul_min;
+    String spo2_per;
     String mmol_L;
 
     public String getDeviceName() {
@@ -52,6 +53,14 @@ public class DevicesData {
         this.pul_min = pul_min;
     }
 
+    public String getSpo2_per() {
+        return spo2_per;
+    }
+
+    public void setSpo2_per(String spo2_per) {
+        this.spo2_per = spo2_per;
+    }
+
     public String getMmol_L() {
         return mmol_L;
     }
@@ -60,14 +69,16 @@ public class DevicesData {
         this.mmol_L = mmol_L;
     }
 
-    public DevicesData(String deviceName, String userName, String sys_mmHg, String dia_mmHg, String pul_min, String mmol_L) {
+    public DevicesData(String deviceName, String userName, String sys_mmHg, String dia_mmHg, String pul_min, String spo2_per, String mmol_L) {
         this.deviceName = deviceName;
         this.userName = userName;
         this.sys_mmHg = sys_mmHg;
         this.dia_mmHg = dia_mmHg;
         this.pul_min = pul_min;
+        this.spo2_per = spo2_per;
         this.mmol_L = mmol_L;
     }
+
     public DevicesData() {
     }
 }

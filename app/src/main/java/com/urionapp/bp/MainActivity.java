@@ -2,6 +2,7 @@ package com.urionapp.bp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -31,19 +32,32 @@ import com.example.urionclass.SampleGattAttributes;
 
 //UrionApp_2015_6_7_1.apk
 public class MainActivity extends BleFragmentActivity implements
-    OnClickListener {
+    OnClickListener, PackageParser.OnDataChangeListener {
 
     public static final int REQUEST_CONNECT_DEVICE = 1;
     public static final int REQUEST_ENABLE_BT = 2;
+    /* 0: 血压计  1：血糖计 2:心率计 3:血氧计*/
+    public static final int TYPE_BP   = 0;
+    public static final int TYPE_GLU  = 1;
+    public static final int TYPE_P    = 2;
+    public static final int TYPE_SO2  = 2;
+
+    private BluetoothGattCharacteristic chReceive;
+    private BluetoothGattCharacteristic chChangeBtName;
+
+    private DataParser mDataParser;
+    private PackageParser mPackageParser;
+    private String strTargetBluetoothName = "BerryMed";
 
     private ImageButton start, user, thread, history, edit;
     private ImageView bluetooth;
     private TextView state;
     private MySpinnerButton mSpinnerBtn;
+    private static long last_report;
     private List<String> list = new ArrayList<String>();
     int i = 0, lu = 0;
     String str;
-    private static final String TAG = "Activity2";
+    private static final String TAG = "MainActivity";
     String nametwo;
     public static int fan = 0, ji = 0;
     // private String bleAddress;
@@ -87,7 +101,20 @@ public class MainActivity extends BleFragmentActivity implements
         thread.setOnClickListener(this);
         edit.setOnClickListener(this);
         history.setOnClickListener(this);
+        last_report = new Date().getTime();
         new UpdateCustomUser().start();
+        mDataParser = new DataParser(DataParser.Protocol.BCI, new DataParser.onPackageReceivedListener() {
+            @Override
+            public void onPackageReceived(int[] dat) {
+                if(mPackageParser == null) {
+                    mPackageParser = new PackageParser(MainActivity.this);
+                }
+
+                mPackageParser.parse(dat);
+            }
+        });
+        mDataParser.start();
+
         list.add("User");
         if (fan == 0) {
             mSpinnerBtn.setText("UserA");
@@ -97,7 +124,7 @@ public class MainActivity extends BleFragmentActivity implements
         }
         i++;
         fan++;
-    }
+    };
 
     class UpdateCustomUser  extends  Thread {
         public void run() {
@@ -352,7 +379,7 @@ public class MainActivity extends BleFragmentActivity implements
         if(bData.substring(bData.length()-4,bData.length()-3).equals("F")) {
             float a =Integer.parseInt(bData.substring(bData.length()-6,bData.length()-4),16);
             mMolValue = a/10;
-            new BluetoothReportor(1,0,0,0,mMolValue).start();
+            new BluetoothReportor(TYPE_GLU,0,0,0,0,mMolValue).start();
             Log.e("console", "测量结果为："+mMolValue+"mmol/L");
             handler.postDelayed(new Runnable() {
                 @Override
@@ -378,10 +405,14 @@ public class MainActivity extends BleFragmentActivity implements
                     L.d("mDevice.getName() is NULL");
                 }else if(-1 != mDevice.getName().indexOf("BJYC") ) {
                     analysisData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-                } else {
+                }else if(-1 != mDevice.getName().indexOf("BerryMed") ) {
+                    mDataParser.add(intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA));
+                } else if(-1 != mDevice.getName().indexOf("Bluetooth BP") ) {
                     byte[] data = intent.getExtras().getByteArray("data");
                     L.d("ble get data:" + Arrays.toString(data));
                     doWithData(data);
+                }else {
+                    L.d("[xiaochi]device is not support");
                 }
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
                        .equals(action)) {
@@ -427,9 +458,16 @@ public class MainActivity extends BleFragmentActivity implements
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null)
             return;
+        BluetoothGattService mInfoService = null;
+        BluetoothGattService mDataService = null;
+
         for (BluetoothGattService gattService : gattServices) {
             String uuid = gattService.getUuid().toString();
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
+            if(gattService.getUuid().equals(Const.UUID_SERVICE_DATA))
+            {
+                mDataService = gattService;
+            }
             //if (uuid.equalsIgnoreCase(SampleGattAttributes.SERVICE_UU))
             {
                 for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
@@ -444,6 +482,27 @@ public class MainActivity extends BleFragmentActivity implements
                     if (uuid1.contains("2a18")) {
                         mBluetoothLeService.setCharacteristicNotification(gattCharacteristic, true);
                         mBluetoothLeService.readCharacteristic(gattCharacteristic);
+                    }
+                }
+            }
+            if(mDataService != null) {
+                List<BluetoothGattCharacteristic> characteristics =
+                        mDataService.getCharacteristics();
+                for(BluetoothGattCharacteristic ch: characteristics) {
+                    if(ch.getUuid().equals(Const.UUID_CHARACTER_RECEIVE)) {
+                        if(null == chReceive){
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mBluetoothLeService.setCharacteristicNotification(chReceive,true);
+                                    Log.e(TAG,">>>>>>>>>>>>>>>>>>>>START<<<<<<<<<<<<<<<<<<<");
+                                }
+                            },5000);
+                        }
+                        chReceive = ch;
+                    } else if(ch.getUuid().equals(Const.UUID_MODIFY_BT_NAME)) {
+                        chChangeBtName = ch;
+                        Log.e(TAG,">>>>>>>>>>>>>>>>>>>>CHECK Bt Name<<<<<<<<<<<<<<<<<<<");
                     }
                 }
             }
@@ -486,7 +545,7 @@ public class MainActivity extends BleFragmentActivity implements
             }
         } else if (data.length == 8 && data[0] == data[1] && data[1] == -3
                    && data[2] == -4) {
-            new BluetoothReportor(0,data[3],data[4],data[5],0).start();
+            new BluetoothReportor(TYPE_BP,data[3],data[4],data[5],0,0).start();
             doShutdown();
         } else if (RecievedDataFix && data.length > 0) {
             toOneoneActivity();
@@ -536,6 +595,35 @@ public class MainActivity extends BleFragmentActivity implements
         }
         lastClickTime = time;
         return false;
+    }
+    private  long last_log_time = 0;
+    @Override
+    public void onSpO2ParamsChanged() {
+        PackageParser.OxiParams params = mPackageParser.getOxiParams();
+        int br = params.getPulseRate();
+        int spo2 = params.getSpo2();
+        long now = new Date().getTime();
+        boolean should_log = (now - last_log_time) >1000? true:false;
+        if(should_log){
+            Log.d(TAG, "DATA:[" + br + "[]" + spo2 + "]");
+        }
+
+        if((spo2 >35) && (spo2 <= 100) ){
+            if(now - last_report > 10000) {
+                new BluetoothReportor(TYPE_SO2, 0, 0, br, spo2, 0).start();
+                last_report = now;
+            }
+        }else {
+            if(should_log) {
+                Log.d(TAG, "Sensor disconnect");
+            }
+        }
+        //mHandler.obtainMessage(Const.MESSAGE_OXIMETER_PARAMS,pc,params.getPulseRate()).sendToTarget();
+    }
+
+    @Override
+    public void onSpO2WaveChanged(int wave) {
+       // mHandler.obtainMessage(Const.MESSAGE_OXIMETER_WAVE,wave,0).sendToTarget();
     }
 
 }

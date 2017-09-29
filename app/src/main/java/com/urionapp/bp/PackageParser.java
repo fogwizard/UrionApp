@@ -1,6 +1,7 @@
 package com.urionapp.bp;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.util.Log;
 
 //import com.berry_med.spo2_ble.BluetoothLeService;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class PackageParser
 {
-
+    final  String TAG = "PackageParser:";
     private OxiParams mOxiParams;
     private OnDataChangeListener mOnDataChangeListener;
 
@@ -34,12 +35,11 @@ public class PackageParser
         spo2      = packageDat[4];
         pulseRate = packageDat[3] | ((packageDat[2] & 0x40) << 1);
         pi        = packageDat[0] & 0x0f;
-
         if(spo2 != mOxiParams.spo2 || pulseRate != mOxiParams.pulseRate || pi != mOxiParams.pi)
         {
             mOxiParams.update(spo2,pulseRate,pi);
-            mOnDataChangeListener.onSpO2ParamsChanged();
         }
+        mOnDataChangeListener.onSpO2ParamsChanged();
         mOnDataChangeListener.onSpO2WaveChanged(packageDat[1]);
     }
 

@@ -31,6 +31,7 @@ public class BluetoothReportor extends Thread {
     int sys;
     int dia;
     int pul;
+    int SpO2;
     float mmol;
     int type;
     static long last_now;
@@ -86,7 +87,7 @@ public class BluetoothReportor extends Thread {
         }
     }
 
-    boolean Report2Server(int type,String sys, String dia, String pul, String mmol) {
+    boolean Report2Server(int type,String sys, String dia, String pul, String SpO2,String mmol) {
         String device_id = getMac();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String now = df.format(new Date());
@@ -101,13 +102,16 @@ public class BluetoothReportor extends Thread {
             devicesDatas.setDeviceName("GLU");
             break;
         case 2://P 心率计
+            devicesDatas.setDeviceName("P");
             break;
         case 3://SO2 血氧计
+            devicesDatas.setDeviceName("SO2");
             break;
         }
         devicesDatas.setSys_mmHg(sys);
         devicesDatas.setDia_mmHg(dia);
         devicesDatas.setPul_min(pul);
+        devicesDatas.setSpo2_per(SpO2);
         devicesDatas.setMmol_L(mmol);
         //devdata[0].setDeviceName("血糖计");
         contentBean content = new contentBean();
@@ -127,8 +131,7 @@ public class BluetoothReportor extends Thread {
             if(response.isSuccessful()) {
                 String res = response.body().string();
                 respondJsonBean resBean = JSON.parseObject(res,respondJsonBean.class);
-                String msgLog = String.format("Do post success,res=%s\nmsg=%s,code=%d",
-                        res,resBean.getMsg(),resBean.getCode());
+                String msgLog = String.format("Do post success,req=%s\nres=%s\n", MsgStr,res);
                 Log.i(TAG,msgLog);
             } else {
                 Log.i(TAG,"Do post err, req="+ MsgStr);
@@ -151,16 +154,17 @@ public class BluetoothReportor extends Thread {
         last_now = now;
         Report2Server(type,
                       Integer.toString(sys),Integer.toString(dia),Integer.toString(pul),
-                      Float.toString(mmol)
+                      Integer.toString(SpO2),Float.toString(mmol)
                      );
     }
 
-    public BluetoothReportor(int type,int sys,int dia,int pul,float mmol) {
-        /* 0: 血压计  1：血糖计*/
+    public BluetoothReportor(int type,int sys,int dia,int pul,int SpO2,float mmol) {
+        /* 0: 血压计  1：血糖计 2:心率计 3:血氧计*/
         this.type = type;
         this.sys  = sys;
         this.dia  = dia;
         this.pul  = pul;
+        this.SpO2  = SpO2;
         this.mmol = mmol;
     }
     public static void main(String[] args) {
