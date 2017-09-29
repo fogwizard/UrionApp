@@ -166,7 +166,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                         bleState = ble_connecting;
                         mDevice = device;
                         startService();
-                    } else if(-1 != device.getName().indexOf("BJYC")) {
+                    } else if(-1 != device.getName().indexOf("BJYC") || ("BerryMed".equals(device.getName()))) {
                         L.d("[xiaochi]call stopScan");
                         stopScan();
                         bleState = ble_connecting;
