@@ -40,7 +40,7 @@ public class MainActivity extends BleFragmentActivity implements
     public static final int TYPE_BP   = 0;
     public static final int TYPE_GLU  = 1;
     public static final int TYPE_P    = 2;
-    public static final int TYPE_SO2  = 2;
+    public static final int TYPE_SO2  = 3;
 
     private BluetoothGattCharacteristic chReceive;
     private BluetoothGattCharacteristic chChangeBtName;
@@ -54,6 +54,7 @@ public class MainActivity extends BleFragmentActivity implements
     private TextView state;
     private MySpinnerButton mSpinnerBtn;
     private static long last_report;
+    private static long last_start_spo2;
     private List<String> list = new ArrayList<String>();
     int i = 0, lu = 0;
     String str;
@@ -102,6 +103,7 @@ public class MainActivity extends BleFragmentActivity implements
         edit.setOnClickListener(this);
         history.setOnClickListener(this);
         last_report = new Date().getTime();
+        last_start_spo2 = last_report;
         new UpdateCustomUser().start();
         mDataParser = new DataParser(DataParser.Protocol.BCI, new DataParser.onPackageReceivedListener() {
             @Override
@@ -490,14 +492,16 @@ public class MainActivity extends BleFragmentActivity implements
                         mDataService.getCharacteristics();
                 for(BluetoothGattCharacteristic ch: characteristics) {
                     if(ch.getUuid().equals(Const.UUID_CHARACTER_RECEIVE)) {
-                        if(null == chReceive){
+                        long now = new Date().getTime();
+                        if((now -last_start_spo2) >5000) {
+                            last_start_spo2 = now;
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     mBluetoothLeService.setCharacteristicNotification(chReceive,true);
                                     Log.e(TAG,">>>>>>>>>>>>>>>>>>>>START<<<<<<<<<<<<<<<<<<<");
                                 }
-                            },5000);
+                            },2000);
                         }
                         chReceive = ch;
                     } else if(ch.getUuid().equals(Const.UUID_MODIFY_BT_NAME)) {
@@ -606,6 +610,7 @@ public class MainActivity extends BleFragmentActivity implements
         boolean should_log = (now - last_log_time) >1000? true:false;
         if(should_log){
             Log.d(TAG, "DATA:[" + br + "[]" + spo2 + "]");
+            last_log_time = now;
         }
 
         if((spo2 >35) && (spo2 <= 100) ){
