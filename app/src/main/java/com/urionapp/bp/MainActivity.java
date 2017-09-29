@@ -103,7 +103,6 @@ public class MainActivity extends BleFragmentActivity implements
         edit.setOnClickListener(this);
         history.setOnClickListener(this);
         last_report = new Date().getTime();
-        last_start_spo2 = last_report;
         new UpdateCustomUser().start();
         mDataParser = new DataParser(DataParser.Protocol.BCI, new DataParser.onPackageReceivedListener() {
             @Override
