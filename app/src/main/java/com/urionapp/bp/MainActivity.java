@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,7 +53,7 @@ public class MainActivity extends BleFragmentActivity implements
 
     private ImageButton start, user, thread, history, edit;
     private ImageView bluetooth;
-    private TextView state;
+    private TextView state,mDisplay;
     private MySpinnerButton mSpinnerBtn;
     private static long last_report;
     private static long last_start_spo2;
@@ -92,8 +94,8 @@ public class MainActivity extends BleFragmentActivity implements
         edit = (ImageButton) this.findViewById(R.id.bianji);
         bluetooth = (ImageView) this.findViewById(R.id.blue);
         bluetooth.setImageResource(R.drawable.bluetoothno);
-        this.mSpinnerBtn = (MySpinnerButton) this
-                           .findViewById(R.id.spinner_btn);
+        this.mSpinnerBtn = (MySpinnerButton) this.findViewById(R.id.spinner_btn);
+        mDisplay = (TextView) this.findViewById(R.id.warning);
         state = (TextView) this.findViewById(R.id.war);
         state.setTextColor(Color.TRANSPARENT);
         // adapter = new ArrayAdapter<String>(this,
@@ -380,6 +382,8 @@ public class MainActivity extends BleFragmentActivity implements
         if(bData.substring(bData.length()-4,bData.length()-3).equals("F")) {
             float a =Integer.parseInt(bData.substring(bData.length()-6,bData.length()-4),16);
             mMolValue = a/10;
+
+            xiaochiPostMessage(mMolValue+"nmol/L");
             new BluetoothReportor(TYPE_GLU,0,0,0,0,mMolValue).start();
             Log.e("console", "测量结果为："+mMolValue+"mmol/L");
             handler.postDelayed(new Runnable() {
@@ -599,6 +603,34 @@ public class MainActivity extends BleFragmentActivity implements
         lastClickTime = time;
         return false;
     }
+    private  long msg_count = 0;
+    private Handler xiaochiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    String info = msg.getData().getString("val");
+                    if(null != info) {
+                        mDisplay.setText("val["+msg_count+"]="+info);
+                        msg_count++;
+                    }else {
+                        mDisplay.setText("data error");
+                    }
+                    break;
+            }
+        }
+    };
+
+    void xiaochiPostMessage(String info){
+        Message msg = new Message();
+        msg.what = 1;
+        Bundle b = new Bundle();
+        b.putString("val",info);
+        msg.setData(b);
+        xiaochiHandler.sendMessage(msg);
+    }
+
     private  long last_log_time = 0;
     @Override
     public void onSpO2ParamsChanged() {
@@ -608,7 +640,9 @@ public class MainActivity extends BleFragmentActivity implements
         long now = new Date().getTime();
         boolean should_log = (now - last_log_time) >1000? true:false;
         if(should_log){
-            Log.d(TAG, "DATA:[" + br + "[]" + spo2 + "]");
+            String br_spo2 = "(" + br + " " + spo2 + ")";
+            Log.d(TAG, "DATA:"+br_spo2);
+            xiaochiPostMessage(br_spo2);
             last_log_time = now;
         }
 
