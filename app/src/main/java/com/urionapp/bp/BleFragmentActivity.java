@@ -2,6 +2,7 @@
 package com.urionapp.bp;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -82,6 +83,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
         L.d("-------------------->"+mBluetoothAdapter);
         L.d("-------------------->"+mLeScanCallback);
     }
+
     class ScanfleThread extends  Thread  {
         boolean enable;
         int  s_bleState = ble_off;
@@ -94,6 +96,7 @@ public abstract class BleFragmentActivity extends FragmentActivity {
                         L.d("[xiaochi]call startScan ");
                         startScan();
                         s_bleState = ble_scaning;
+                        //connect_time = new Date().getTime();
                     }
                     break;
                 case ble_scaning:

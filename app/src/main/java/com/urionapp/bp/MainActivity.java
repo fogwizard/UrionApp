@@ -367,6 +367,9 @@ public class MainActivity extends BleFragmentActivity implements
     }
 
     public  void doBluetoothDisconnect(int ms){
+        if(ms >0){
+            return;
+        }
         if(null != mBluetoothLeService.getmBluetoothGatt()) {
             Log.d("====","doBluetoothDisconnect");
             mBluetoothLeService.getmBluetoothGatt().disconnect();
